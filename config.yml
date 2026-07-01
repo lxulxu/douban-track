@@ -1,0 +1,68 @@
+# ============================================================================
+# Douban Track 配置
+# ============================================================================
+# 所有 Markdown 输出均由以下模板控制，可按需自定义。
+#
+# --- 可用占位符一览 ---
+#
+# file_template 可用:
+#   {title} {date} {categories} {tags} {sections}
+#   {year} {quarter} {month} {week} {period_type} {period_label}
+#
+# section_template 可用:
+#   {icon} {label} {items}
+#   {year} {quarter} {month} {week} {period_type} {period_label}
+#
+# item_template 可用:
+#   {published} {title} {url} {rating} {rating_stars} {status} {type} {image_url}
+#   {year} {quarter} {month} {week} {period_type} {period_label}
+#
+# title 可用:
+#   {year} {quarter} {month} {week} {period_type} {period_label}
+#
+# PERIOD 环境变量: quarterly（默认） / monthly / weekly
+# ============================================================================
+
+title: "Y{year}Q{quarter} 影视音总结"
+date_format: "%Y-%m-%d"
+categories: ["生活"]
+tags: ["生活"]
+
+# ----------------------------------------------------------------------------
+# 文件整体模板 — 控制整个 .md 文件的结构
+# {sections} 会被替换为所有 section 的内容
+# ----------------------------------------------------------------------------
+file_template: |
+  ---
+  title: "{title}"
+  date: {date}
+  categories: [{categories}]
+  tags: [{tags}]
+  ---
+
+  {sections}
+
+# ----------------------------------------------------------------------------
+# 分类模板 — 控制每个分类（电影/读书/音乐...）的标题和条目布局
+# {icon} {label} 来自下方 sections 配置
+# {items} 会被替换为该分类下所有条目的渲染结果
+# ----------------------------------------------------------------------------
+section_template: |
+  ## {icon}{label}
+
+  {items}
+
+# ----------------------------------------------------------------------------
+# 条目模板 — 控制每个条目的显示格式
+# ----------------------------------------------------------------------------
+item_template: "- {published}. [**{title}**]({url}) — {rating_stars}"
+
+# ----------------------------------------------------------------------------
+# 分类显示设置 — 按豆瓣条目类型索引
+# ----------------------------------------------------------------------------
+sections:
+  movie: { icon: "🎬", label: "电影" }
+  book:  { icon: "📚", label: "读书" }
+  music: { icon: "🎵", label: "音乐" }
+  game:  { icon: "🎮", label: "游戏" }
+  drama: { icon: "🎭", label: "戏剧" }

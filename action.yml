@@ -1,0 +1,38 @@
+name: 'Douban Track'
+description: 'Track your Douban media and sync to Markdown via RSS. No cookie needed.'
+author: 'lxulxu'
+branding:
+  icon: 'book-open'
+  color: 'green'
+
+inputs:
+  rss_url:
+    description: 'Douban RSS feed URL'
+    required: true
+  period:
+    description: 'Output period — quarterly (default), monthly, or weekly'
+    required: false
+    default: 'quarterly'
+  output_dir:
+    description: 'Directory for output markdown (in workspace)'
+    required: false
+    default: '.'
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: pip install -r "${{ github.action_path }}/requirements.txt"
+      shell: bash
+
+    - name: Generate markdown
+      run: python "${{ github.action_path }}/main.py"
+      shell: bash
+      env:
+        RSS_URL: ${{ inputs.rss_url }}
+        PERIOD: ${{ inputs.period }}
+        DOUBAN_OUTPUT: ${{ inputs.output_dir }}
