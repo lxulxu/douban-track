@@ -258,10 +258,11 @@ def main() -> None:
 
     config = load_config("config.yml")
     output_dir = os.environ.get("DOUBAN_OUTPUT", ".")
+    cache_path = os.path.join(os.environ.get("DATA_DIR", "."), "douban_data.json")
 
     new_entries = parse_feed(rss_url)
-    save_cache("douban_data.json", new_entries)
-    all_data = load_cache("douban_data.json")
+    save_cache(cache_path, new_entries)
+    all_data = load_cache(cache_path)
 
     period_info = get_period(period_type)
     filtered = filter_by_date_range(all_data, period_info["start"], period_info["end"])

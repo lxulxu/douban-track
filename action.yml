@@ -17,6 +17,10 @@ inputs:
     description: 'Directory for output markdown (in workspace)'
     required: false
     default: '.'
+  data_dir:
+    description: 'Directory for the cache file douban_data.json'
+    required: false
+    default: '.'
 
 runs:
   using: 'composite'
@@ -36,3 +40,4 @@ runs:
         RSS_URL: ${{ inputs.rss_url }}
         PERIOD: ${{ inputs.period }}
         DOUBAN_OUTPUT: ${{ inputs.output_dir }}
+        DATA_DIR: ${{ inputs.data_dir }}
