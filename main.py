@@ -6,12 +6,13 @@ from datetime import datetime, timedelta
 
 import feedparser, yaml
 
-PREFIX_MAP = {
-    "看过": "done", "读过": "done", "听过": "done", "玩过": "done",
-    "在看": "doing", "在读": "doing", "在听": "doing",
-    "想看": "wish", "想读": "wish", "想听": "wish",
-    "最近在看": "doing", "最近在读": "doing", "最近在听": "doing",
+VALID_PREFIXES = {
+    "看过", "读过", "听过", "玩过",
+    "在看", "在读", "在听",
+    "最近在看", "最近在读", "最近在听",
 }
+
+SECTION_ORDER = ["movie", "book", "drama", "game", "music"]
 
 RATING_MAP = {"力荐": 5, "推荐": 4, "还行": 3, "较差": 2, "很差": 1}
 
@@ -77,7 +78,7 @@ def parse_feed(rss_url: str) -> dict[str, dict]:
 
 
 def _extract_entry(entry) -> dict | None:
-    title, status = _extract_title(entry.title)
+    title = _extract_title(entry.title)
     if not title:
         return None
     return {
@@ -87,15 +88,14 @@ def _extract_entry(entry) -> dict | None:
                          "%a, %d %b %Y %H:%M:%S %Z").date()),
         "image_url": _extract_image_url(entry.description),
         "rating":    _extract_rating(entry.description),
-        "status":    status,
     }
 
 
-def _extract_title(raw_title: str) -> tuple[str | None, str | None]:
-    for prefix, status in PREFIX_MAP.items():
+def _extract_title(raw_title: str) -> str | None:
+    for prefix in VALID_PREFIXES:
         if raw_title.startswith(prefix):
-            return raw_title[len(prefix):].strip(), status
-    return None, None
+            return raw_title[len(prefix):].strip()
+    return None
 
 
 def _extract_image_url(description: str) -> str | None:
@@ -204,7 +204,8 @@ def generate_markdown(filtered: dict, config: dict, period_info: dict) -> str:
     file_tmpl = config.get("file_template", DEFAULT_CONFIG["file_template"])
 
     sections: list[str] = []
-    for cat_type, items in filtered.items():
+    for cat_type in SECTION_ORDER:
+        items = filtered.get(cat_type)
         if not items:
             continue
         sc = sec_cfg.get(cat_type, {})
@@ -215,7 +216,7 @@ def generate_markdown(filtered: dict, config: dict, period_info: dict) -> str:
                  published=it["published"], title=it["title"], url=url,
                  rating=str(it.get("rating", 0)),
                  rating_stars="★" * it.get("rating", 0) + "☆" * (5 - it.get("rating", 0)),
-                 status=it.get("status", "done"), type=it.get("type", ""),
+                 type=it.get("type", ""),
                  image_url=it.get("image_url", ""))
             for url, it in items.items()
         ]

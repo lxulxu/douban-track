@@ -14,7 +14,7 @@
 #   {year} {quarter} {month} {week} {period_type} {period_label}
 #
 # item_template 可用:
-#   {published} {title} {url} {rating} {rating_stars} {status} {type} {image_url}
+#   {published} {title} {url} {rating} {rating_stars} {type} {image_url}
 #   {year} {quarter} {month} {week} {period_type} {period_label}
 #
 # title 可用:

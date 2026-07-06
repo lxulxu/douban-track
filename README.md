@@ -196,7 +196,7 @@ tags: [douban]
 |------|-----------|
 | `file_template` | `{title}` `{date}` `{categories}` `{tags}` `{sections}` |
 | `section_template` | `{icon}` `{label}` `{items}` |
-| `item_template` | `{published}` `{title}` `{url}` `{rating}` `{rating_stars}` `{status}` `{type}` `{image_url}` |
+| `item_template` | `{published}` `{title}` `{url}` `{rating}` `{rating_stars}` `{type}` `{image_url}` |
 
 以上所有模板均可使用公共占位符：`{year}` `{quarter}` `{month}` `{week}` `{period_type}` `{period_label}`
 
